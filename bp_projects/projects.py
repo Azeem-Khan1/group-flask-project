@@ -14,9 +14,9 @@ def portfolio():
 def kangaroos():
     return render_template("varalu.html")
 
-@app_projects.route('/collin/')
+@app_projects.route('/colin/')
 def walruses():
-    return render_template("collin.html")
+    return render_template("colin.html")
 
 @app_projects.route('/azeem/')
 def hawkers():
