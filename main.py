@@ -21,6 +21,11 @@ def index():
 def stub():
     return render_template("stub.html")
 
+@app.route('/purpose/')  # connects /stub/ URL to stub() function
+def purpose():
+    return render_template("purpose.html")
+
+
 # this runs the application on the development server
 if __name__ == "__main__":
     app.run(debug=True)

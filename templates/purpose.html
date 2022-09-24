@@ -1,0 +1,30 @@
+<!-- Extending the predefined project layout -->
+{% extends "layouts/base.html" %}
+
+<!- This variable sets name of browser tab  -->
+{% set project = "Why" %}
+
+<!- This is a replacement block for Body in base.html -->
+{% block body %}
+    <!- Try building a new body here, bootstrap is a wise choice ->
+    <div class="px-5 py-5 mx-auto">
+        <h1 class="text-primary"><strong>SCRUM TEAM:</strong></h1>
+        <p class="text-secondary">
+            <li> <mark>Scrum Master</mark>: Chinmay R</li>
+            <li> <mark>Dev Op</mark>: Varalu N</li>
+            <li> <mark>Backend Developer</mark>: Collin M </li>
+            <li> <mark>Frontend Developer</mark>: Azeem K</li>
+        </p>
+    </div>
+    <div class="px-5 py-20 mx-auto">
+        <h1 class="text-primary"><strong>Programming Purpose</strong></h1>
+        <p class = "text-secondary">
+            <h3>Purpose of the Program</h3>
+            The purpose of this program is to assist with kids in developing study habits and flashcards.
+        </p>
+    </div>
+{% endblock %}
+
+<!- This is turning off birds background from base.html -->
+{% block background %}
+{% endblock %}
