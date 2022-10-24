@@ -19,9 +19,12 @@ class WikiAPI:
 
         page_py = wiki_wiki.page(name) # init to wikipedia by default for default page, otherwise check name
         thisdict = {} # create a dictionary
+        thisdict["url"] = page_py.fullurl 
+        thisdict["summary"] = page_py.summary
         for i in page_py.sections:
-            thisdict["summary"] = page_py.summary[0:100]  # init values
-            thisdict["url"] = page_py.fullurl 
+            thisdict[i.title] = i.text
+              # init values
+            
 
         return thisdict
         
