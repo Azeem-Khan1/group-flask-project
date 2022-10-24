@@ -14,46 +14,44 @@ api = Api(app_api)
 
 class WikiAPI:
     # not implemented
-    def serialize():
-        wiki_wiki = wikipediaapi.Wikipedia('en')
+    def serialize(name):
+        wiki_wiki = wikipediaapi.Wikipedia('en') # make a wikipedia api object
 
-        page_py = wiki_wiki.page('Python_(programming_language)')
-        thisdict = {}
-        z = 0
+        page_py = wiki_wiki.page(name) # init to wikipedia by default for default page, otherwise check name
+        thisdict = {} # create a dictionary
         for i in page_py.sections:
-            section_id = z
-            thisdict["summary"] = page_py.summary[0:60] 
+            thisdict["summary"] = page_py.summary[0:100]  # init values
             thisdict["url"] = page_py.fullurl 
 
         return thisdict
         
     class _Create(Resource):
-        def post(self, name):
+        def post(self, name): # simply creates the endpoint, dne otherwise
             pass
             
     # getJokes()
     class _Read(Resource):
         def get(self):
-            return jsonify(WikiAPI.serialize())
+            return jsonify(WikiAPI.serialize('wikipedia')) # init wikipedia by default
 
     # getJoke(id)
-    class _ReadID(Resource):
-        def get(self, id):
-            return jsonify(WikiAPI.serialize())
+    class _ReadWithName(Resource): # read when url have name query satisfied
+        def get(self, name):
+            return jsonify(WikiAPI.serialize(name))# otherwise check with name
 
     # getRandomJoke()
     class _ReadRandom(Resource):
         def get(self):
-            return jsonify(WikiAPI.serialize())
+            return jsonify(WikiAPI.serialize()) # this exists for some reason
     
 
     # building RESTapi resources/interfaces, these routes are added to Web Server
     api.add_resource(_Create, '/create/<string:name>')
     api.add_resource(_Read, '/')
-    api.add_resource(_ReadID, '/<int:id>')
+    api.add_resource(_ReadWithName, '/<string:name>') # reference type and value name
     api.add_resource(_ReadRandom, '/random')
     
-if __name__ == "__main__": 
+if __name__ == "__main__": # THIS ONLY RUNS IF YOU RUN THE FILE, NOT IF YOU OPEN IN A TAB. ONLY USE FOR DEBUGGING
     # server = "http://127.0.0.1:5000" # run local
     server = 'https://flask.nighthawkcodingsociety.com' # run from web
     url = server + "/api/wiki"
