@@ -27,7 +27,7 @@ class WikiAPI:
             
 
         return thisdict
-        
+
     class _Create(Resource):
         def post(self, name): # simply creates the endpoint, dne otherwise
             pass
@@ -45,7 +45,7 @@ class WikiAPI:
     # getRandomJoke()
     class _ReadRandom(Resource):
         def get(self):
-            return jsonify(WikiAPI.serialize()) # this exists for some reason
+            return jsonify(WikiAPI.serialize('wikipedia')) # this exists for some reason
     
 
     # building RESTapi resources/interfaces, these routes are added to Web Server
