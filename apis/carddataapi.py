@@ -3,7 +3,7 @@ from flask_restful import Api, Resource # used for REST API building
 import requests  # used for testing 
 import random
 app_api = Blueprint('api', __name__,
-                   url_prefix='/new/auth/')
+                   url_prefix='/new/card/')
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
 api = Api(app_api)
