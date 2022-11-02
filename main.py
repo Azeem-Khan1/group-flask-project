@@ -2,8 +2,7 @@
 from flask import render_template  # import render_template from "public" flask libraries
 # import "packages" from "this" project
 from __init__ import app  # Definitions initialization
-from apis.wikiapi import app_api # Blueprint import api definition
-from apis.carddataapi import app_api
+from apis.twoapi import app_api # blueprint import api definition
 #from apis.covid import covid_api # Blueprint import api definition
 
 from bp_projects.projects import app_projects # Blueprint directory import projects definition

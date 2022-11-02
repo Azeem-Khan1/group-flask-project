@@ -3,17 +3,17 @@ from flask_restful import Api, Resource # used for REST API building
 import requests  # used for testing 
 import random
 import wikipediaapi
-
-from model_jokes import *
-
 app_api = Blueprint('api', __name__,
-                   url_prefix='/api/wiki')
+                   url_prefix='/api/')
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
 api = Api(app_api)
 
-class WikiAPI:
-    # not implemented
+'''
+I combined both in order to support both endpoints on the same area. may allow us to pivot should it be necessary
+basically tricks the server into running both ends
+'''
+class CardAPI:
     def serialize(name):
         wiki_wiki = wikipediaapi.Wikipedia('en') # make a wikipedia api object
 
@@ -28,36 +28,53 @@ class WikiAPI:
 
         return thisdict
 
+    local_dic = {} # Stores all the users and IDs
+    def card(front, back, diction):
+        user_id = len(diction)
+        diction[user_id] = {'title':front, "substance":back}
+
+
     class _Create(Resource):
-        def post(self, name): # simply creates the endpoint, dne otherwise
+        def post(self, front, back): # simply creates the endpoint, dne otherwise
+            CardAPI.card(front, back, CardAPI.local_dic)
             pass
             
     # getJokes()
     class _Read(Resource):
         def get(self):
-            return jsonify(WikiAPI.serialize('wikipedia')) # init wikipedia by default
+            return jsonify(CardAPI.local_dic) # init wikipedia by default
+
+    class _WikiRead(Resource):
+        def get(self):
+            return jsonify(CardAPI.serialize('wikipedia')) # init wikipedia by default
 
     # getJoke(id)
     class _ReadWithName(Resource): # read when url have name query satisfied
         def get(self, name):
-            return jsonify(WikiAPI.serialize(name))# otherwise check with name
+            return jsonify(CardAPI.serialize(name))# otherwise check with name
+
+    
+    # getJoke(id)
+   # class _ReadWithName(Resource): # read when url have name query satisfied
+    #    def get(self, name):
+     #       return jsonify()# otherwise check with name
 
     # getRandomJoke()
-    class _ReadRandom(Resource):
-        def get(self):
-            return jsonify(WikiAPI.serialize('wikipedia')) # this exists for some reason
+    #class _ReadRandom(Resource):
+     #   def get(self):
+      #      return jsonify() # this exists for some reason
     
 
     # building RESTapi resources/interfaces, these routes are added to Web Server
-    api.add_resource(_Create, '/create/<string:name>')
-    api.add_resource(_Read, '/')
-    api.add_resource(_ReadWithName, '/<string:name>') # reference type and value name
-    api.add_resource(_ReadRandom, '/random')
+    api.add_resource(_Create, '/card/create/<string:front>_<string:back>')
+    api.add_resource(_Read, '/card/')
+    api.add_resource(_WikiRead, '/wiki/')
+    api.add_resource(_ReadWithName, '/wiki/<string:name>')
     
 if __name__ == "__main__": # THIS ONLY RUNS IF YOU RUN THE FILE, NOT IF YOU OPEN IN A TAB. ONLY USE FOR DEBUGGING
     # server = "http://127.0.0.1:5000" # run local
     server = 'https://flask.nighthawkcodingsociety.com' # run from web
-    url = server + "/api/wiki"
+    url = server + "/api/auth"
     responses = []  # responses list
 
     # get count of jokes on server
