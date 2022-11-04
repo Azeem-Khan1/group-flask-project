@@ -32,7 +32,12 @@ class CardAPI:
     def card(front, back, diction):
         user_id = len(diction)
         diction[user_id] = {'title':front, "substance":back}
-
+    def delete_all(query):
+        if query == "true":
+            local_dic = {}
+            return {"message" : "operation successful"}
+        else:
+            return {"message" : "operation failure"}
 
     class _Create(Resource):
         def post(self, front, back): # simply creates the endpoint, dne otherwise
@@ -52,6 +57,9 @@ class CardAPI:
     class _ReadWithName(Resource): # read when url have name query satisfied
         def get(self, name):
             return jsonify(CardAPI.serialize(name))# otherwise check with name
+    class _Delete(Resource):
+        def get(self, query):
+            return jsonify(CardAPI.delete_all(query))
 
     
     # getJoke(id)
