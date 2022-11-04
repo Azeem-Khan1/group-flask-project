@@ -30,9 +30,8 @@ class CardAPI:
 
     local_dic = {} # Stores all the users and IDs
     def card(front, back, diction):
-        diction['title'] = front
-        diction['substance'] = back
-
+        user_id = len(diction)
+        diction[user_id] = {'title':front, "substance":back}
     def delete_all(query):
         if query == "true":
             local_dic = {}
@@ -58,7 +57,6 @@ class CardAPI:
     class _ReadWithName(Resource): # read when url have name query satisfied
         def get(self, name):
             return jsonify(CardAPI.serialize(name))# otherwise check with name
-
     class _Delete(Resource):
         def get(self, query):
             return jsonify(CardAPI.delete_all(query))
