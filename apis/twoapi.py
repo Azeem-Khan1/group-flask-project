@@ -78,7 +78,7 @@ class CardAPI:
     api.add_resource(_Read, '/card/')
     api.add_resource(_WikiRead, '/wiki/')
     api.add_resource(_ReadWithName, '/wiki/<string:name>')
-    api.add_resource(_Delete, 'card/delete/<string:query')
+    api.add_resource(_Delete, 'card/delete/<string:query>')
     
 if __name__ == "__main__": # THIS ONLY RUNS IF YOU RUN THE FILE, NOT IF YOU OPEN IN A TAB. ONLY USE FOR DEBUGGING
     # server = "http://127.0.0.1:5000" # run local
