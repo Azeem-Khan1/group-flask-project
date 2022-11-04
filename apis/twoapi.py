@@ -32,9 +32,9 @@ class CardAPI:
     def card(front, back, diction):
         user_id = len(diction)
         diction[user_id] = {'title':front, "substance":back}
-    def delete_all(query):
+    def delete_all(query, diction):
         if query == "true":
-            local_dic = {}
+            diction = {}
             return {"message" : "operation successful"}
         else:
             return {"message" : "operation failure"}
@@ -58,8 +58,9 @@ class CardAPI:
         def get(self, name):
             return jsonify(CardAPI.serialize(name))# otherwise check with name
     class _Delete(Resource):
-        def get(self, query):
-            return jsonify(CardAPI.delete_all(query))
+        def get(self, id):
+            key = CardAPI.local_dic.pop(id, None)
+            return jsonify({"list" : key, "dict":CardAPI.local_dic})
 
     
     # getJoke(id)
@@ -78,7 +79,7 @@ class CardAPI:
     api.add_resource(_Read, '/card/')
     api.add_resource(_WikiRead, '/wiki/')
     api.add_resource(_ReadWithName, '/wiki/<string:name>')
-    api.add_resource(_Delete, 'card/delete/<string:query>')
+    api.add_resource(_Delete, 'card/delete/<int:id>')
     
 if __name__ == "__main__": # THIS ONLY RUNS IF YOU RUN THE FILE, NOT IF YOU OPEN IN A TAB. ONLY USE FOR DEBUGGING
     # server = "http://127.0.0.1:5000" # run local
