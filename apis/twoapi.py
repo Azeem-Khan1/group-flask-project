@@ -30,9 +30,9 @@ class CardAPI:
 
     local_dic = {} # Stores all the users and IDs
     def card(front, back, diction):
-        user_id = len(diction)
-        diction[user_id] = {'title':front, "substance":back}
-        
+        diction['title'] = front
+        diction['substance'] = back
+
     def delete_all(query):
         if query == "true":
             local_dic = {}
