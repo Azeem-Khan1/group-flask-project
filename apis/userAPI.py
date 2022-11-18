@@ -13,59 +13,56 @@ api = Api(app_api)
 I combined both in order to support both endpoints on the same area. may allow us to pivot should it be necessary
 basically tricks the server into running both ends
 '''
-class CardAPI:
+class UsrAPI:
     local_dic = {}
     def addUsr(name, username, password, diction):
-        diction["name"] = name
-        diction["data"] = {
-            "user" : username,
-            "password" : password,
-            "bio" : "",
-            "bday" : "",
-            "interests" : ""
+        usr_id = len(diction)
+        diction[usr_id] = {
+            "name" : name,
+            "data" : {
+                "user" : username,
+                "password" : password,
+                "bio" : "",
+                "bday" : "",
+                "interests" : ""
+            }
         }
+    def addSpecific(id, specific, data, diction):
+        if id not in diction: 
+            return {"message" : "key not found" }
+        else:
+            dictionary = diction["data"]
+        if specific not in dictionary:
+            return {"message" : "specific key in {id} not found" }
+        try:
+            dictionary[specific] = data
+        except Exception as e:
+            return {'message' : f"Error found when trying to find specific key {specific}: {e}"}
         
 
+        
+    # Update the library, include delete and update
     class _Create(Resource):
         def post(self, name, username, password): # simply creates the endpoint, dne otherwise
-            CardAPI.addUsr(name, username, password, CardAPI.local_dic)
+            UsrAPI.addUsr(name, username, password, UsrAPI.local_dic)
             pass
-            
-    # getJokes()
-    class _Read(Resource):
-        def get(self):
-            return jsonify(CardAPI.local_dic) # init wikipedia by default
-
-    class _WikiRead(Resource):
-        def get(self):
-            return jsonify(CardAPI.serialize('wikipedia')) # init wikipedia by default
-
-    # getJoke(id)
-    class _ReadWithName(Resource): # read when url have name query satisfied
-        def get(self, name):
-            return jsonify(CardAPI.serialize(name))# otherwise check with name
+    class _Update(Resource):
+        def post(self, id, specific, data):
+            UsrAPI.addSpecific(id, specific, data)
+            pass 
     class _Delete(Resource):
         def get(self, id):
-            key = CardAPI.local_dic.pop(id, None)
-            return jsonify({"list" : key, "dict":CardAPI.local_dic})
-
-    
-    # getJoke(id)
-   # class _ReadWithName(Resource): # read when url have name query satisfied
-    #    def get(self, name):
-     #       return jsonify()# otherwise check with name
-
-    # getRandomJoke()
-    #class _ReadRandom(Resource):
-     #   def get(self):
-      #      return jsonify() # this exists for some reason
-    
+            key = UsrAPI.local_dic.pop(id, None)
+            return jsonify({"message" : f"successfully removed {key}"})        
+            
+    # Add stuff to the library
+    class _Read(Resource):
+        def get(self):
+            return jsonify(UsrAPI.local_dic)     
 
     # building RESTapi resources/interfaces, these routes are added to Web Server
     api.add_resource(_Create, '/card/create/<string:front>_<string:back>')
     api.add_resource(_Read, '/card/')
-    api.add_resource(_WikiRead, '/wiki/')
-    api.add_resource(_ReadWithName, '/wiki/<string:name>')
     api.add_resource(_Delete, 'card/delete/<int:id>')
     
 if __name__ == "__main__": # THIS ONLY RUNS IF YOU RUN THE FILE, NOT IF YOU OPEN IN A TAB. ONLY USE FOR DEBUGGING

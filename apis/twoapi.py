@@ -13,7 +13,7 @@ api = Api(app_api)
 I combined both in order to support both endpoints on the same area. may allow us to pivot should it be necessary
 basically tricks the server into running both ends
 '''
-class CardAPI:
+class UsrAPI:
     def serialize(name):
         wiki_wiki = wikipediaapi.Wikipedia('en') # make a wikipedia api object
 
@@ -41,26 +41,26 @@ class CardAPI:
 
     class _Create(Resource):
         def post(self, front, back): # simply creates the endpoint, dne otherwise
-            CardAPI.card(front, back, CardAPI.local_dic)
+            UsrAPI.card(front, back, UsrAPI.local_dic)
             pass
             
     # getJokes()
     class _Read(Resource):
         def get(self):
-            return jsonify(CardAPI.local_dic) # init wikipedia by default
+            return jsonify(UsrAPI.local_dic) # init wikipedia by default
 
     class _WikiRead(Resource):
         def get(self):
-            return jsonify(CardAPI.serialize('wikipedia')) # init wikipedia by default
+            return jsonify(UsrAPI.serialize('wikipedia')) # init wikipedia by default
 
     # getJoke(id)
     class _ReadWithName(Resource): # read when url have name query satisfied
         def get(self, name):
-            return jsonify(CardAPI.serialize(name))# otherwise check with name
+            return jsonify(UsrAPI.serialize(name))# otherwise check with name
     class _Delete(Resource):
         def get(self, id):
-            key = CardAPI.local_dic.pop(id, None)
-            return jsonify({"list" : key, "dict":CardAPI.local_dic})
+            key = UsrAPI.local_dic.pop(id, None)
+            return jsonify({"list" : key, "dict":UsrAPI.local_dic})
 
     
     # getJoke(id)
