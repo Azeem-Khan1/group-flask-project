@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify  # jsonify creates an endpoint response object
+from flask import Blueprint, request, jsonify  # jsonify creates an endpoint response object
 from flask_restful import Api, Resource # used for REST API building
 import requests  # used for testing 
 import random
@@ -30,7 +30,7 @@ class UsrAPI:
 
     local_dic = {} # Stores all the users and IDs
     def card(front, back, diction):
-        user_id = len(diction)
+        user_id = str(len(diction))
         diction[user_id] = {'title':front, "substance":back}
     def delete_all(query, diction):
         if query == "true":
@@ -42,12 +42,20 @@ class UsrAPI:
     class _Create(Resource):
         def post(self, front, back): # simply creates the endpoint, dne otherwise
             UsrAPI.card(front, back, UsrAPI.local_dic)
-            pass
-            
+            return {"message" : f"{front} and {back} added"}
+        
     # getJokes()
     class _Read(Resource):
         def get(self):
             return jsonify(UsrAPI.local_dic) # init wikipedia by default
+
+    class _Update(Resource):
+        def put(self, nid):
+            lst = []
+            id = str(nid)
+            body = request.get_json()
+            UsrAPI.local_dic[id] = body
+            return {"message" : f"{body} added"}
 
     class _WikiRead(Resource):
         def get(self):
@@ -60,7 +68,7 @@ class UsrAPI:
     class _Delete(Resource):
         def get(self, id):
             key = UsrAPI.local_dic.pop(id, None)
-            return jsonify({"list" : key, "dict":UsrAPI.local_dic})
+            return jsonify({"message": f" {key} deleted"})
 
     
     # getJoke(id)
@@ -79,33 +87,5 @@ class UsrAPI:
     api.add_resource(_Read, '/card/')
     api.add_resource(_WikiRead, '/wiki/')
     api.add_resource(_ReadWithName, '/wiki/<string:name>')
-    api.add_resource(_Delete, 'card/delete/<int:id>')
-    
-if __name__ == "__main__": # THIS ONLY RUNS IF YOU RUN THE FILE, NOT IF YOU OPEN IN A TAB. ONLY USE FOR DEBUGGING
-    # server = "http://127.0.0.1:5000" # run local
-    server = 'https://flask.nighthawkcodingsociety.com' # run from web
-    url = server + "/api/auth"
-    responses = []  # responses list
-
-    # get count of jokes on server
-    count_response = requests.get(url+"/count")
-    count_json = count_response.json()
-    count = count_json['count']
-
-    # update likes/dislikes test sequence
-    num = str(random.randint(0, count-1)) # test a random record
-    responses.append(
-        requests.get(url+"/"+num)  # read joke by id
-        ) 
-    # obtain a random joke
-    responses.append(
-        requests.get(url+"/random")  # read a random joke
-        ) 
-
-    # cycle through responses
-    for response in responses:
-        print(response)
-        try:
-            print(response.json())
-        except:
-            print("unknown error")
+    api.add_resource(_Delete, 'card/delete/<string:id>')
+    api.add_resource(_Update, 'card/update/<string:nid>')
