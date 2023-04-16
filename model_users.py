@@ -169,7 +169,7 @@ def model_builder():
     """Create database and tables"""
     db.create_all()
     """Tester data for table"""
-    u1 = Users(name='Thomas Edison', email='tedison@example.com', password='123toby', phone="1111111111")
+    #u1 = Users(name='AQ', email='tedison@example.com', password='123toby', phone="1111111111")
     u2 = Users(name='Nicholas Tesla', email='ntesla@example.com', password='123niko', phone="1111112222")
     u3 = Users(name='Alexander Graham Bell', email='agbell@example.com', password='123lex', phone="1111113333")
     u4 = Users(name='Eli Whitney', email='eliw@example.com', password='123whit', phone="1111114444")
@@ -178,8 +178,9 @@ def model_builder():
     u6 = Users(name='John Mortensen', email='jmort1021@yahoo.com', password='123qwerty', phone="8587754956")
     # U7 intended to fail as duplicate key
     u7 = Users(name='John Mortensen', email='jmort1021@yahoo.com', password='123qwerty', phone="8586791294")
+    u8 = Users(name='Diwakar', email='dr@yahoo.com', password='123dddd', phone="2147835618")
 
-    table = [u1, u2, u3, u4, u5, u6, u7]
+    table = [u2, u3, u4, u5, u6, u7, u8]
 
     """Builds sample user/note(s) data"""
     for row in table:

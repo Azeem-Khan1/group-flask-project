@@ -53,7 +53,7 @@ class UsrAPI:
     class _Delete(Resource):
         def get(self, id):
             key = UsrAPI.local_dic.pop(id, None)
-            return jsonify({"message" : f"successfully removed {key}"})        
+            return jsonify({"message" : f"successfully removed {key}"})       
             
     # Add stuff to the library
     class _Read(Resource):
